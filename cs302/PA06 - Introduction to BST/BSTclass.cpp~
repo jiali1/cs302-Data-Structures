@@ -1,0 +1,166 @@
+// Program Information ////////////////////////////////////////////////////////
+/**
+ * @file BSTClass.h
+ *
+ * @brief Definition file for BSTClass
+ * 
+ * @details Specifies all member methods of the BSTClass
+ *
+ * @version 1.10
+ *          Michael Leverington (27 February 2016)
+ *          Updated for use with new assignment
+ * 
+ *          1.00 
+ *          Michael Leverington (30 August 2015)
+ *          Original code
+ *
+ * @Note None
+ */
+
+// Precompiler directives /////////////////////////////////////////////////////
+
+#ifndef BST_CLASS_CPP
+#define BST_CLASS_CPP
+
+// Header files ///////////////////////////////////////////////////////////////
+
+#include <iostream>
+#include "BSTClass.h"
+
+using namespace std;
+
+template <typename DataType>
+BSTNode<DataType>::BSTNode( const DataType &nodeData, BSTNode *leftPtr, BSTNode *rightPtr )
+: dataItem( nodeData ), left( leftPtr ), right( rightPtr )
+{
+    //constructed in the initializer.
+}
+
+template <typename DataType>
+BSTClass<DataType>::BSTClass()
+: rootNode( NULL )
+{
+    //constructed in the initializer.
+}
+
+template <typename DataType>
+BSTClass<DataType>::BSTClass( const BSTClass<DataType> &copied )
+: rootNode( NULL )
+{
+    if( !copied.isEmpty( ) )
+    {
+        copyTree( this->rootNode, copied.rootNode );
+    }
+}
+
+template <typename DataType>
+BSTClass<DataType>::~BSTClass()
+{
+    clear();
+}
+
+template <typename DataType>
+const BSTClass& BSTClass<DataType>::operator = (const BSTClass<DataType> &rhData )
+{
+    if( this != &rhData )
+    {
+        copyTree( this->rootNode, rhData.rootNode );
+        return *this;
+    }
+    else if( rhData.isEmpty() )
+    {
+        clear( );
+        return *this;
+    }
+    return *this;
+}
+
+template <typename DataType>
+void BSTClass<DataType>::clear()
+
+template <typename DataType>
+void BSTClass<DataType>::insert( const DataType &newData )
+
+template <typename DataType>
+bool BSTClass<DataType>::find( DataType &searchDataItem ) const
+
+template <typename DataType>
+bool BSTClass<DataType>::remove( const DataType &dataItem )
+
+template <typename DataType>
+bool BSTClass<DataType>::isEmpty() const
+
+template <typename DataType>
+void BSTClass<DataType>::preOrderTraversal() const
+{
+
+    BSTNode<DataType>* workingPtr = rootNode;
+ 
+    preOrderTraversalHelper( workingPtr ); 
+
+}
+
+template <typename DataType> 
+void BSTClass<DataType>::inOrderTraversal() const
+{
+
+    BSTNode<DataType>* workingPtr = rootNode; 
+    
+    inOrderTraversalHelper( workingPtr );
+
+}
+
+template <typename DataType>  
+void BSTClass<DataType>::postOrderTraversal() const
+{
+
+    BSTNode<DataType>* workingPtr = rootNode; 
+
+    postOrderTraversal( workingPtr );
+}
+//recursion functions from here on 
+template <typename DataType>
+void BSTClass<DataType>::copyTree( BSTNode<DataType> *&workingPtr, 
+                                   const BSTNode<DataType> *sourcePtr )
+
+template <typename DataType>
+void BSTClass<DataType>::clearHelper( BSTNode<DataType> *workingPtr )
+
+template <typename DataType>
+void BSTClass<DataType>::insertHelper( BSTNode<DataType> *&workingPtr, 
+                                              const DataType &newData )
+
+template <typename DataType>
+bool BSTClass<DataType>::findHelper( BSTNode<DataType> *workingPtr, 
+                                 DataType &searchDataItem ) const
+
+template <typename DataType>
+bool BSTClass<DataType>::removeHelper( BSTNode<DataType> *&workingPtr, 
+                                       const DataType &removeDataItem )
+
+template <typename DataType>
+void BSTClass<DataType>::preOrderTraversalHelper( BSTNode<DataType> 
+                                                     *workingPtr) const
+{
+    char buffer[
+    if( workingPtr != NULL )
+    {
+            
+
+        preOrderTraversalHelper( workingPtr->left ); 
+          
+        preOrderTraversalHelper( workingPtr->right );
+    }
+
+}
+
+template <typename DataType>
+void BSTClass<DataType>::inOrderTraversalHelper( BSTNode<DataType> 
+                                                     *workingPtr) const
+
+template <typename DataType>
+void BSTClass<DataType>::postOrderTraversalHelper( BSTNode<DataType> 
+                                                     *workingPtr) const
+
+#endif	// define BST_CLASS_CPP
+

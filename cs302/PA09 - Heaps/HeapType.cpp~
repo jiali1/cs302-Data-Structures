@@ -1,0 +1,349 @@
+// Program Information ////////////////////////////////////////////////////////
+/**
+ * @file HeapType.cpp
+ *
+ * @brief Implementation file for HeapType class
+ * 
+ * @details Implement all member methods of the HeapType class
+ *
+ * @version 1.00 
+ *          Jia Li (02 April 2016)
+ *          Original code
+ *
+ * @Note None
+ */
+
+// Precompiler directives /////////////////////////////////////////////////////
+
+#ifndef HEAPTYPE_CPP
+#define HEAPTYPE_CPP
+
+// Header files ///////////////////////////////////////////////////////////////
+
+#include <iostream>
+#include <stdexcept>
+#include <cstdlib>
+#include "HeapType.h"
+
+using namespace std;
+
+// Class implmentation ////////////////////////////////////////////////////////
+
+template <class DataType>
+HeapType<DataType>::HeapType()
+: heapCapacity( DEFAULT_CAPACITY ), heapSize( 0 )
+{
+    heapVector = new DataType[heapCapacity];
+}
+
+template <class DataType>
+HeapType<DataType>::HeapType( const HeapType<DataType> &copiedVector )
+: heapCapacity( copiedVector.heapCapacity ), heapSize( copiedVector.heapSize ) 
+{
+    heapVector = new DataType[heapCapacity];
+    if( heapSize != 0 ) 
+    {
+        copyHeapVector( heapVector, copiedVector.heapVector, heapSize);
+    } 
+}
+// destructor
+
+template <class DataType>
+HeapType<DataType>::~HeapType( )
+{
+    delete[] heapVector; 
+    heapVector = NULL;
+    heapSize = 0; 
+    heapCapacity = 0; 
+}
+
+// assignment
+
+template <class DataType>
+const HeapType<DataType>& HeapType<DataType>::operator = 
+                          ( const HeapType<DataType> &rhVector )
+{
+    if( this != &rhVector )
+    {
+        clear(); 
+        heapSize = rhVector.heapSize;
+        heapCapacity = rhVector.heapCapacity;
+        heapVector = new DataType[heapCapacity]; 
+        copyHeapVector( heapVector, rhVector.heapVector, heapSize ); 
+    }
+}
+
+// accessors
+
+// shows heap structure in tree form
+
+template <class DataType>
+void HeapType<DataType>::showHPStructure( char IDChar )
+{
+    int index = 0;
+    int indexTwo = 0;
+    int nodesAtLevel = 1; 
+    int rowLevel = getHeight( );  
+    int firstSpaces; 
+    int dividerSpaces; 
+    int data; 
+    cout << "Heap " << IDChar << " Data:" << endl;
+    while( rowLevel > 0 )
+    {
+        getSpacing( rowLevel, firstSpaces, dividerSpaces );
+        for( index = 0; index < nodesAtLevel; index++ )
+        {
+            if( indexTwo < heapSize )
+            {
+                if( index == 0 )
+                {
+                    displayChars( firstSpaces, SPACE );     
+                } 
+                else 
+                {
+                    displayChars( dividerSpaces, SPACE );
+                }
+                data = heapVector[indexTwo].toInt( );
+                displayInt( data );
+                indexTwo++;
+            }
+        }
+        cout << endl;
+        nodesAtLevel = nodesAtLevel * 2; 
+        rowLevel--;
+    } 
+    cout << endl;
+}
+
+// gets size of heap
+template <class DataType>
+int HeapType<DataType>::getSize() const
+{
+    return heapSize; 
+}
+
+// reports if heap empty
+template <class DataType>
+bool HeapType<DataType>::isEmpty() const
+{
+    if( heapSize == 0 )
+    {
+        return true; 
+    }
+    else
+    {
+        return false; 
+    }
+}
+
+// modifiers
+
+// adds (inserts) data in heap, uses recursive shift up
+template <class DataType>
+void HeapType<DataType>::add( const DataType &inData )
+{
+    checkForResize( ); 
+    heapSize++; 
+    heapVector[heapSize - 1] = inData;  
+    shiftUp( heapSize - 1 ); 
+}
+
+// removes data from heap, uses recursive shift down
+template <class DataType>
+bool HeapType<DataType>::remove( DataType &removeData )
+{
+    if( isEmpty() )
+    {
+        return false; 
+    }
+    removeData = heapVector[0];
+    heapVector[0] = heapVector[heapSize-1]; 
+    heapSize--; 
+    shiftDown( 0 );
+    return true; 
+}
+
+// clears size of heap
+template <class DataType>
+void HeapType<DataType>::clear()
+{
+    heapSize = 0;
+}
+
+
+
+// recursively shifts element up heap after add operation
+template <class DataType>
+void HeapType<DataType>::shiftUp( int currentIndex )
+{
+    int parentIndex; 
+    if( currentIndex != 0 )
+    {
+        parentIndex = ( currentIndex - 1 ) / 2; 
+        if( heapVector[currentIndex].compareKey( heapVector[parentIndex] ) > 0 )
+        {
+            swap( currentIndex, parentIndex ); 
+            shiftUp( parentIndex ); 
+        }
+    }
+}
+
+// recursively shifts element down heap after remove operation
+template <class DataType>
+void HeapType<DataType>::shiftDown( int currentIndex )
+{
+    int largeChildIndex;
+    int rightChildIndex;
+    largeChildIndex = BASE_TWO * currentIndex + 1; 
+    rightChildIndex = largeChildIndex + 1; 
+    if( largeChildIndex < heapSize ) 
+    { 
+        if( rightChildIndex < heapSize ) 
+        {
+            if( heapVector[rightChildIndex].compareKey( heapVector[largeChildIndex] ) > 0 )
+            {
+                largeChildIndex = rightChildIndex; 
+            }
+        }
+        if( heapVector[largeChildIndex].compareKey( heapVector[currentIndex] ) > 0 )
+        {
+            swap( currentIndex, largeChildIndex ); 
+            shiftDown( largeChildIndex ); 
+        }
+    }
+}
+// checks for need to resize during add operation
+// increases size by 125%
+template <class DataType>
+void HeapType<DataType>::checkForResize()
+{
+    int index = 0; 
+    DataType* temp;
+    int originalCapacity = heapCapacity; 
+    if( heapSize >= heapCapacity ) 
+    {
+        heapCapacity = heapCapacity * 1.25;
+        temp = new DataType[heapCapacity]; 
+        for( index = 0; index < originalCapacity; index++ )
+        {
+           temp[index] = heapVector[index]; 
+        }
+        delete[] heapVector; 
+        heapVector = temp; 
+        temp = NULL;
+    }
+    
+}
+
+// utility to copy vector from one location to other
+template <class DataType>
+void HeapType<DataType>::copyHeapVector( DataType *destination, 
+                                          const DataType *source, int count )
+{ 
+    int index = 0; 
+    for( index = 0; index < count; index++ )
+    {
+        destination[index] = source[index];
+    }
+}
+
+// swaps data element locations using given indices
+template <class DataType>
+void HeapType<DataType>::swap( int one, int other )
+{
+    DataType temp;
+
+    if( !isEmpty( ) )
+    {
+        temp = heapVector[one];
+        heapVector[one] = heapVector[other];
+        heapVector[other] = temp;
+    }
+}
+
+// gets height of heap
+template <class DataType>
+int HeapType<DataType>::getHeight() const
+{
+    int height = heapSize;
+    int counter = 0;  
+    while( height != 0 )
+    {
+        height = height / 2; 
+        counter++;
+    }
+    return counter; 
+}
+
+// calculates display spacing depending on row
+// assumes bottom row is always #1
+template <class DataType>
+void HeapType<DataType>::getSpacing( int row, int &firstSpaces, int &dividerSpaces ) const
+{
+    const int ONE = 1;
+    const int THREE = 3; 
+    firstSpaces = toPower( BASE_TWO, row ) - ONE; 
+    dividerSpaces = toPower( BASE_TWO, row + ONE ) - THREE; 
+}
+
+// calculates simple integer power, as needed for tree calculations
+template <class DataType>
+int HeapType<DataType>::toPower( int base, int exponent ) const
+{
+    int index = 0; 
+    int baseTwo = base;
+    if( exponent == 0 )
+    {
+        return 1;
+    }
+    while( index < exponent - 1 )
+    {
+        base = base * baseTwo;
+        index++;
+    }
+    return base;
+}
+
+// displays integer as three digits, centers one digit,
+// adds leading zero to two digits, normally displays three digits
+template <class DataType>
+void HeapType<DataType>::displayInt( int valueIndex ) const
+{
+    const int ONE_HUNDRED = 100; 
+    const int TEN = 10;
+    const int ZERO = 0; 
+ 
+    if( valueIndex < ONE_HUNDRED )
+    {
+        if( valueIndex < TEN )
+        {
+            cout << SPACE << valueIndex << SPACE; 
+        }
+        else 
+        {
+            cout << ZERO << valueIndex;
+        }
+    }
+    else 
+    {
+        cout << valueIndex; 
+    }
+}
+
+// displays given number of characters
+template <class DataType>
+void HeapType<DataType>::displayChars( int numChars, char outChar ) const
+{
+    int index = 0; 
+  
+    for( index = 0; index < numChars; index++ )
+    {
+        cout << outChar;
+    }
+}
+
+
+// Terminating precompiler directives  ////////////////////////////////////////
+
+#endif		// #ifndef HEAPTYPE_CPP
+

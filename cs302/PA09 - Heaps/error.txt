@@ -1,0 +1,99 @@
+
+
+                               ^
+In file included from HeapType.cpp:26:0,
+                 from PA09.cpp:28:
+HeapType.cpp: In instantiation of ‘HeapType<DataType>::HeapType() [with DataType = RoomType]’:
+PA09.cpp:73:24:   required from here
+HeapType.h:112:12: warning: ‘HeapType<RoomType>::heapSize’ will be initialized after [-Wreorder]
+        int heapSize;
+            ^
+HeapType.h:111:12: warning:   ‘int HeapType<RoomType>::heapCapacity’ [-Wreorder]
+        int heapCapacity;
+            ^
+In file included from PA09.cpp:28:0:
+HeapType.cpp:33:1: warning:   when initialized here [-Wreorder]
+ HeapType<DataType>::HeapType()
+ ^
+In file included from HeapType.cpp:26:0,
+                 from PA09.cpp:28:
+HeapType.cpp: In instantiation of ‘HeapType<DataType>::HeapType() [with DataType = ClassType]’:
+PA09.cpp:74:25:   required from here
+HeapType.h:112:12: warning: ‘HeapType<ClassType>::heapSize’ will be initialized after [-Wreorder]
+        int heapSize;
+            ^
+HeapType.h:111:12: warning:   ‘int HeapType<ClassType>::heapCapacity’ [-Wreorder]
+        int heapCapacity;
+            ^
+In file included from PA09.cpp:28:0:
+HeapType.cpp:33:1: warning:   when initialized here [-Wreorder]
+ HeapType<DataType>::HeapType()
+ ^
+HeapType.cpp: In instantiation of ‘void HeapType<DataType>::add(const DataType&) [with DataType = RoomType]’:
+PA09.cpp:106:43:   required from here
+HeapType.cpp:141:19: error: ‘checkForSize’ was not declared in this scope
+     checkForSize( ); 
+                   ^
+HeapType.cpp: In instantiation of ‘void HeapType<DataType>::add(const DataType&) [with DataType = ClassType]’:
+PA09.cpp:130:45:   required from here
+HeapType.cpp:141:19: error: ‘checkForSize’ was not declared in this scope
+HeapType.cpp: In instantiation of ‘void HeapType<DataType>::showHPStructure(char) [with DataType = RoomType]’:
+PA09.cpp:135:39:   required from here
+HeapType.cpp:92:9: warning: for increment expression has no effect [-Wunused-value]
+         for( index = 0; index < nodesAtLevel; index )
+         ^
+HeapType.cpp: In instantiation of ‘void HeapType<DataType>::showHPStructure(char) [with DataType = ClassType]’:
+PA09.cpp:136:40:   required from here
+HeapType.cpp:92:9: warning: for increment expression has no effect [-Wunused-value]
+In file included from HeapType.cpp:26:0,
+                 from PA09.cpp:28:
+HeapType.cpp: In instantiation of ‘HeapType<DataType>::HeapType(const HeapType<DataType>&) [with DataType = RoomType]’:
+PA09.cpp:208:50:   required from here
+HeapType.h:112:12: warning: ‘HeapType<RoomType>::heapSize’ will be initialized after [-Wreorder]
+        int heapSize;
+            ^
+HeapType.h:111:12: warning:   ‘int HeapType<RoomType>::heapCapacity’ [-Wreorder]
+        int heapCapacity;
+            ^
+In file included from PA09.cpp:28:0:
+HeapType.cpp:40:1: warning:   when initialized here [-Wreorder]
+ HeapType<DataType>::HeapType( const HeapType<DataType> &copiedVector )
+ ^
+HeapType.cpp: In instantiation of ‘int HeapType<DataType>::getHeight() const [with DataType = RoomType]’:
+HeapType.cpp:84:31:   required from ‘void HeapType<DataType>::showHPStructure(char) [with DataType = RoomType]’
+PA09.cpp:135:39:   required from here
+HeapType.cpp:258:18: error: assignment of member ‘HeapType<RoomType>::heapSize’ in read-only object
+         heapSize = heapSize / 2; 
+                  ^
+HeapType.cpp:254:9: warning: unused variable ‘height’ [-Wunused-variable]
+     int height = heapSize;
+         ^
+HeapType.cpp: In instantiation of ‘void HeapType<DataType>::displayInt(int) const [with DataType = RoomType]’:
+HeapType.cpp:105:34:   required from ‘void HeapType<DataType>::showHPStructure(char) [with DataType = RoomType]’
+PA09.cpp:135:39:   required from here
+HeapType.cpp:298:15: warning: unused variable ‘ONE_HUNDRED’ [-Wunused-variable]
+     const int ONE_HUNDRED = 100; 
+               ^
+HeapType.cpp:299:15: warning: unused variable ‘TEN’ [-Wunused-variable]
+     const int TEN = 10;
+               ^
+HeapType.cpp: In instantiation of ‘int HeapType<DataType>::getHeight() const [with DataType = ClassType]’:
+HeapType.cpp:84:31:   required from ‘void HeapType<DataType>::showHPStructure(char) [with DataType = ClassType]’
+PA09.cpp:136:40:   required from here
+HeapType.cpp:258:18: error: assignment of member ‘HeapType<ClassType>::heapSize’ in read-only object
+         heapSize = heapSize / 2; 
+                  ^
+HeapType.cpp:254:9: warning: unused variable ‘height’ [-Wunused-variable]
+     int height = heapSize;
+         ^
+HeapType.cpp: In instantiation of ‘void HeapType<DataType>::displayInt(int) const [with DataType = ClassType]’:
+HeapType.cpp:105:34:   required from ‘void HeapType<DataType>::showHPStructure(char) [with DataType = ClassType]’
+PA09.cpp:136:40:   required from here
+HeapType.cpp:298:15: warning: unused variable ‘ONE_HUNDRED’ [-Wunused-variable]
+     const int ONE_HUNDRED = 100; 
+               ^
+HeapType.cpp:299:15: warning: unused variable ‘TEN’ [-Wunused-variable]
+     const int TEN = 10;
+               ^
+make: *** [PA09.o] Error 1
+
